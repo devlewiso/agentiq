@@ -11,12 +11,12 @@ import HistoryCounter from '@/components/historyCounter';
 
 export default function Dashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ email?: string; user_metadata?: { name?: string } } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [calls, setCalls] = useState<any[]>([]);
+  const [calls, setCalls] = useState<Array<{ id: number; date: string; agent: string; duration: string; sentiment: string; topics: string[]; score: number }>>([]);
   
   // Función para agregar una nueva llamada analizada
-  const addAnalyzedCall = (analysisResult: any) => {
+  const addAnalyzedCall = (analysisResult: { analysis: string }) => {
     // Extraer información relevante del análisis
     const now = new Date();
     const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -102,7 +102,7 @@ export default function Dashboard() {
       setCalls([]);
       
       // Configurar un listener para cuando el usuario cierre sesión
-      const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
         if (event === 'SIGNED_OUT') {
           // Reiniciar las llamadas cuando el usuario cierre sesión
           setCalls([]);

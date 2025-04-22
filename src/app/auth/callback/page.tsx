@@ -49,9 +49,9 @@ export default function AuthCallbackPage() {
           // This could be a direct navigation to the callback page
           setError('Authentication process incomplete. Please try signing in again.');
         }
-      } catch (err: any) {
+      } catch (err: Error | unknown) {
         console.error('Authentication error:', err);
-        setError(err.message || 'An error occurred during authentication');
+        setError(err instanceof Error ? err.message : 'An error occurred during authentication');
       }
     };
 

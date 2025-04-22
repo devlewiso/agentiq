@@ -12,7 +12,7 @@ export default function Contact() {
             Contact Us
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            We're here to help you transform your call center with artificial intelligence
+            We&apos;re here to help you transform your call center with artificial intelligence
           </p>
         </div>
 

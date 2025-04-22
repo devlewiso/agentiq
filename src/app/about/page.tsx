@@ -55,7 +55,7 @@ export default function AboutUs() {
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Our History</h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-                AgentIQ was born in 2023 from the shared vision of a group of artificial intelligence experts and professionals with extensive experience in call center supervision. Frustrated by the subjectivity and time consumed in traditional call evaluations, they decided to create an analysis tool that would provide supervisors with objective data and actionable insights about their agents' performance.
+                AgentIQ was born in 2023 from the shared vision of a group of artificial intelligence experts and professionals with extensive experience in call center supervision. Frustrated by the subjectivity and time consumed in traditional call evaluations, they decided to create an analysis tool that would provide supervisors with objective data and actionable insights about their agents&apos; performance.
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Since then, we have been on a mission to provide call center supervisors and managers of all sizes with advanced analysis tools that were previously only available to large corporations, enabling them to continuously improve their teams' service quality through objective evaluations and data-driven coaching.
@@ -143,7 +143,7 @@ export default function AboutUs() {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Carlos Rodriguez</h3>
               <p className="text-blue-600 dark:text-blue-400 mb-4">CEO & Co-Founder</p>
               <p className="text-gray-600 dark:text-gray-300 text-sm">
-                Technology visionary with over 15 years of experience in call center management. Carlos leads AgentIQ's strategy and overall vision, focusing on how call analysis can transform supervision.
+                Technology visionary with over 15 years of experience in call center management. Carlos leads AgentIQ&apos;s strategy and overall vision, focusing on how call analysis can transform supervision.
               </p>
             </div>
 
