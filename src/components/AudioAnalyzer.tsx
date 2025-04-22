@@ -8,6 +8,7 @@ import {
 } from '@/utils/prompts';
 import supabase from '@/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
+import type { User } from '@supabase/supabase-js';
 import DatabaseSetupInfo from './DatabaseSetupInfo';
 import { generateCertificationHTML } from '@/utils/certificationFormat';
 import {
