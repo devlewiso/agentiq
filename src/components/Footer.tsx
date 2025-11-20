@@ -39,8 +39,11 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 dark:text-gray-400 text-sm text-center">© {new Date().getFullYear()} AgentIQ. All rights reserved.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center mt-2 md:mt-0">
+            Powered by <a href="https://neuralcodelab.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">NeuralCodeLab.com</a>
+          </p>
         </div>
       </div>
     </footer>
