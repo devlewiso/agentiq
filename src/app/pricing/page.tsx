@@ -45,7 +45,7 @@ export default function Pricing() {
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: 5 minutes per call</p>
+                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: 20 minutes per call</p>
                 </div>
                 <div className="flex items-center">
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -74,6 +74,7 @@ export default function Pricing() {
               </div>
             </div>
           </div>
+
           {/* Standard Plan */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-transform hover:scale-105">
             <div className="bg-blue-600 p-6 text-white">
@@ -82,7 +83,7 @@ export default function Pricing() {
             </div>
             <div className="p-8">
               <div className="flex items-baseline mb-8">
-                <span className="text-5xl font-extrabold text-gray-900 dark:text-white">$99</span>
+                <span className="text-5xl font-extrabold text-gray-900 dark:text-white">$29</span>
                 <span className="text-xl text-gray-500 dark:text-gray-400 ml-2">/month</span>
               </div>
               <div className="space-y-4 mb-8">
@@ -96,7 +97,7 @@ export default function Pricing() {
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: 10 minutes per call</p>
+                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: 25 minutes per call</p>
                 </div>
                 <div className="flex items-center">
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +125,7 @@ export default function Pricing() {
                 </div>
               </div>
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Additional calls at $1.20 per analysis</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Additional calls at $0.50 per analysis</p>
                 <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
                   Choose Standard Plan
                 </button>
@@ -143,7 +144,7 @@ export default function Pricing() {
             </div>
             <div className="p-8">
               <div className="flex items-baseline mb-8">
-                <span className="text-5xl font-extrabold text-gray-900 dark:text-white">$249</span>
+                <span className="text-5xl font-extrabold text-gray-900 dark:text-white">$79</span>
                 <span className="text-xl text-gray-500 dark:text-gray-400 ml-2">/month</span>
               </div>
               <div className="space-y-4 mb-8">
@@ -157,7 +158,7 @@ export default function Pricing() {
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: <span className="font-bold">20 minutes</span> per call</p>
+                  <p className="text-gray-700 dark:text-gray-300">Maximum duration: <span className="font-bold">30+ minutes</span> per call</p>
                 </div>
                 <div className="flex items-center">
                   <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -191,7 +192,7 @@ export default function Pricing() {
                 </div>
               </div>
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Additional calls at $0.95 per analysis</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Additional calls at $0.30 per analysis</p>
                 <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
                   Choose Premium Plan
                 </button>
