@@ -1,29 +1,45 @@
-// Prompts for audio analysis
+// Prompts for audio analysis with OpenAI
 
-// Main prompt for complete analysis (transcription, analysis, and recommendations)
-export const AUDIO_ANALYSIS_PROMPT = `You are a highly sophisticated audio analysis service. Your task is to transcribe the provided audio clip, analyze the sentiment expressed, and provide actionable recommendations for improvement in communication style. Follow these guidelines:
+// Main prompt for GPT-4 analysis (used after Whisper transcription)
+export const AUDIO_ANALYSIS_PROMPT = `You are an expert call center quality analyst. You will receive a transcription of a customer service call. Your task is to analyze it comprehensively and provide actionable insights.
 
-*   **Language:** Transcribe *exactly* what is said in the original language of the audio.
-*   **Accuracy:** Prioritize accuracy in transcription. Even with poor audio quality, make your best attempt.
-*   **Punctuation:** Include appropriate punctuation for readability.
-*   **Formatting:** Present the transcription as a single, continuous block of text. Do not include introductory phrases.
-*   **Non-Speech Sounds:** Include descriptions of significant non-speech sounds within square brackets \`[]\`.
-*   **Handling Uncertainty:** Mark uncertain words with a question mark \`?\`.
-*   **Sentiment Analysis:** After the transcription, perform a sentiment analysis. Identify the overall sentiment expressed in the audio as one of the following: "Positive," "Negative," "Neutral," or "Mixed."  Also, identify *specific* phrases that contribute to that sentiment.
-*   **Sentiment Detail:** For each identified sentiment phrase, briefly explain *why* it contributes to the overall sentiment. (e.g., "The phrase 'Estoy muy contento' expresses positive emotion due to the use of 'muy contento'.")
-*   **Recommendations for Improvement:** Based on the sentiment analysis, provide 2-3 actionable recommendations for improving the speaker's communication style. These recommendations should be specific and practical.  Consider aspects like tone, clarity, and emotional impact.  Frame recommendations as suggestions, not criticisms.
-*   **Output Format:**  The output should be structured as follows:
+Analyze the following aspects:
 
-    1.  **Transcription:** [The full transcribed text]
-    2.  **Overall Sentiment:** [Positive/Negative/Neutral/Mixed]
-    3.  **Sentiment Breakdown:**
-        *   [Phrase 1]: [Explanation of sentiment]
-        *   [Phrase 2]: [Explanation of sentiment]
-        *   ...
-    4.  **Recommendations for Improvement:**
-        *   [Recommendation 1]
-        *   [Recommendation 2]
-        *   [Recommendation 3]`;
+1. **Overall Sentiment**: Determine if the conversation is Positive, Negative, Neutral, or Mixed.
 
-// Prompt for transcription
-export const TRANSCRIPTION_PROMPT = `Please transcribe this audio in its original language. Only provide the exact transcription, without additional comments.`;
+2. **Sentiment Breakdown**: Identify 2-3 specific phrases or moments that contribute to the overall sentiment and explain why.
+
+3. **Quality Score**: Rate the call quality on a scale of 0-100 based on:
+   - Agent professionalism and courtesy
+   - Problem resolution effectiveness
+   - Communication clarity
+   - Customer satisfaction indicators
+
+4. **Key Topics**: Identify the 2-3 main topics discussed in the call.
+
+5. **Recommendations**: Provide 2-3 specific, actionable recommendations to improve the agent's performance or communication style.
+
+Format your response EXACTLY as follows:
+
+**OVERALL SENTIMENT:** [Positive/Negative/Neutral/Mixed]
+
+**SENTIMENT BREAKDOWN:**
+- [Phrase or moment 1]: [Brief explanation]
+- [Phrase or moment 2]: [Brief explanation]
+- [Phrase or moment 3]: [Brief explanation]
+
+**QUALITY SCORE:** [0-100]
+
+**KEY TOPICS:**
+- [Topic 1]
+- [Topic 2]
+- [Topic 3]
+
+**RECOMMENDATIONS:**
+1. [Specific recommendation 1]
+2. [Specific recommendation 2]
+3. [Specific recommendation 3]
+
+Be concise, professional, and focus on actionable insights.`;
+
+// Note: Whisper API handles transcription automatically, no prompt needed
