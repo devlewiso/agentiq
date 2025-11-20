@@ -11,7 +11,7 @@ import supabase from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 
 // Maximum allowed audio duration in seconds (5 minutes)
-export const MAX_AUDIO_DURATION = 5 * 60;
+export const MAX_AUDIO_DURATION = 20 * 60;
 
 // Daily and monthly limits
 export const DAILY_LIMIT = 5;
@@ -32,12 +32,12 @@ export async function checkAudioDuration(file: File): Promise<boolean> {
   return new Promise((resolve) => {
     const audio = new Audio();
     audio.src = URL.createObjectURL(file);
-    
+
     audio.onloadedmetadata = () => {
       URL.revokeObjectURL(audio.src);
       resolve(audio.duration <= MAX_AUDIO_DURATION);
     };
-    
+
     audio.onerror = () => {
       URL.revokeObjectURL(audio.src);
       resolve(false); // If we can't determine duration, assume it's too long
@@ -65,7 +65,7 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
       .from('call_analyses')
       .select('id')
       .limit(1);
-    
+
     // Si hay un error, probablemente la tabla no existe
     if (tableCheckError) {
       console.log('Tables may not exist yet, using default values');
@@ -77,12 +77,12 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
         isLimitReached: false
       };
     }
-    
+
     // Get current date info
     const now = new Date();
     const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
     const currentMonth = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`; // YYYY-MM
-    
+
     // Query analyses made today
     const { data: todayData, error: todayError } = await supabase
       .from('call_analyses')
@@ -90,7 +90,7 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
       .eq('user_id', user.id)
       .gte('created_at', `${today}T00:00:00`)
       .lt('created_at', `${today}T23:59:59`);
-      
+
     // Query analyses made this month
     const { data: monthData, error: monthError } = await supabase
       .from('call_analyses')
@@ -98,7 +98,7 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
       .eq('user_id', user.id)
       .gte('created_at', `${currentMonth}-01T00:00:00`)
       .lt('created_at', `${currentMonth}-31T23:59:59`);
-    
+
     if (todayError || monthError) {
       console.log('Error querying usage data, using default values');
       return {
@@ -109,13 +109,13 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
         isLimitReached: false
       };
     }
-    
+
     const dailyCount = todayData?.length || 0;
     const monthlyCount = monthData?.length || 0;
-    
+
     const remainingDaily = Math.max(0, DAILY_LIMIT - dailyCount);
     const remainingMonthly = Math.max(0, MONTHLY_LIMIT - monthlyCount);
-    
+
     return {
       dailyCount,
       monthlyCount,
@@ -139,10 +139,10 @@ export async function getUserUsageStats(user: User | null): Promise<UsageStats> 
  * Save analysis result to the database
  */
 export async function saveAnalysisToHistory(
-  user: User | null, 
-  result: { 
-    transcript: string; 
-    analysis: string; 
+  user: User | null,
+  result: {
+    transcript: string;
+    analysis: string;
     recommendations: string;
     agent?: string;
     duration?: string;
@@ -151,18 +151,18 @@ export async function saveAnalysisToHistory(
   }
 ): Promise<string | null> {
   if (!user) return null;
-  
+
   try {
     // Verificar primero si la tabla existe
     const { error: tableCheckError } = await supabase
       .from('call_analyses')
       .select('id')
       .limit(1);
-    
+
     // Si hay un error, probablemente la tabla no existe
     if (tableCheckError) {
       console.log('call_analyses table may not exist yet, creating it automatically');
-      
+
       // Intentar crear la tabla (esto solo funcionará si el usuario tiene permisos)
       try {
         // Nota: Esta es una solución temporal. Lo ideal sería ejecutar el script SQL
@@ -174,25 +174,25 @@ export async function saveAnalysisToHistory(
         return null;
       }
     }
-    
+
     // Extract sentiment from analysis
     const sentimentMatch = result.analysis.match(/sentiment:?\s*(positive|negative|neutral)/i);
     const sentiment = sentimentMatch ? sentimentMatch[1].charAt(0).toUpperCase() + sentimentMatch[1].slice(1) : 'Neutral';
-    
+
     // Extract score from analysis if not provided
     let score = result.score;
     if (!score) {
-      const scoreMatch = result.analysis.match(/quality score:?\s*(\d+(\.\d+)?)/i) || 
-                        result.analysis.match(/quality:?\s*(\d+(\.\d+)?)/i) ||
-                        result.analysis.match(/overall score:?\s*(\d+(\.\d+)?)/i);
+      const scoreMatch = result.analysis.match(/quality score:?\s*(\d+(\.\d+)?)/i) ||
+        result.analysis.match(/quality:?\s*(\d+(\.\d+)?)/i) ||
+        result.analysis.match(/overall score:?\s*(\d+(\.\d+)?)/i);
       score = scoreMatch ? scoreMatch[1] : '85';
     }
-    
+
     // Extract topics if not provided
     let topics = result.topics;
     if (!topics || topics.length === 0) {
       const topicsSection = result.analysis.match(/key topics:?([\s\S]*?)(?=\n\n|$)/i) ||
-                          result.analysis.match(/main topics:?([\s\S]*?)(?=\n\n|$)/i);
+        result.analysis.match(/main topics:?([\s\S]*?)(?=\n\n|$)/i);
       if (topicsSection) {
         const topicsText = topicsSection[1];
         topics = topicsText.split(/\n-|\n•|\n\*/)
@@ -202,10 +202,10 @@ export async function saveAnalysisToHistory(
         topics = ['General inquiry', 'Customer service', 'Problem resolution'];
       }
     }
-    
+
     // Generate a unique ID
     const id = `call-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-    
+
     // Guardar el análisis localmente en localStorage como respaldo
     try {
       // Solo funciona en el navegador
@@ -229,7 +229,7 @@ export async function saveAnalysisToHistory(
     } catch (localStorageError) {
       console.log('Could not save to localStorage:', localStorageError);
     }
-    
+
     // Intentar guardar en Supabase
     try {
       const { error } = await supabase
@@ -246,14 +246,14 @@ export async function saveAnalysisToHistory(
           topics,
           score: parseFloat(score)
         });
-      
+
       if (error) {
         console.log('Error saving to Supabase, but saved to localStorage:', error);
       }
     } catch (supabaseError) {
       console.log('Error with Supabase insert:', supabaseError);
     }
-    
+
     return id;
   } catch (error) {
     console.log('Unexpected error in saveAnalysisToHistory:', error);
@@ -266,18 +266,18 @@ export async function saveAnalysisToHistory(
  */
 export async function incrementUsageCounter(user: User | null): Promise<boolean> {
   if (!user) return false;
-  
+
   try {
     // Verificar primero si la tabla existe
     const { error: tableCheckError } = await supabase
       .from('usage_counters')
       .select('id')
       .limit(1);
-    
+
     // Si hay un error, probablemente la tabla no existe
     if (tableCheckError) {
       console.log('usage_counters table may not exist yet, using localStorage instead');
-      
+
       // Usar localStorage como alternativa
       try {
         if (typeof window !== 'undefined') {
@@ -286,7 +286,7 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
           const now = new Date();
           const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
           const currentMonth = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`; // YYYY-MM
-          
+
           // Incrementar contadores
           if (!counters[user.id]) {
             counters[user.id] = {};
@@ -297,24 +297,24 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
           if (!counters[user.id][currentMonth]) {
             counters[user.id][currentMonth] = 0;
           }
-          
+
           counters[user.id][today]++;
           counters[user.id][currentMonth]++;
-          
+
           localStorage.setItem('agentiq_counters', JSON.stringify(counters));
           return true;
         }
       } catch (localStorageError) {
         console.log('Error using localStorage for counters:', localStorageError);
       }
-      
+
       return true; // Asumir éxito en modo de desarrollo
     }
-    
+
     const now = new Date();
     const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
     const currentMonth = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`; // YYYY-MM
-    
+
     // Check if a counter for today exists
     const { data: existingDaily, error: dailyError } = await supabase
       .from('usage_counters')
@@ -323,12 +323,12 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
       .eq('type', 'daily')
       .eq('period', today)
       .single();
-    
+
     if (dailyError && dailyError.code !== 'PGRST116') { // PGRST116 means no rows returned
       console.log('Error checking daily counter, using localStorage instead:', dailyError);
       return true; // Continuar con el análisis de todos modos
     }
-    
+
     // Check if a counter for this month exists
     const { data: existingMonthly, error: monthlyError } = await supabase
       .from('usage_counters')
@@ -337,19 +337,19 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
       .eq('type', 'monthly')
       .eq('period', currentMonth)
       .single();
-    
+
     if (monthlyError && monthlyError.code !== 'PGRST116') { // PGRST116 means no rows returned
       console.log('Error checking monthly counter, using localStorage instead:', monthlyError);
       return true; // Continuar con el análisis de todos modos
     }
-    
+
     // Update or create daily counter
     if (existingDaily) {
       const { error: updateDailyError } = await supabase
         .from('usage_counters')
         .update({ count: existingDaily.count + 1 })
         .eq('id', existingDaily.id);
-      
+
       if (updateDailyError) {
         console.log('Error updating daily counter, using localStorage instead:', updateDailyError);
       }
@@ -362,19 +362,19 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
           period: today,
           count: 1
         });
-      
+
       if (insertDailyError) {
         console.log('Error creating daily counter, using localStorage instead:', insertDailyError);
       }
     }
-    
+
     // Update or create monthly counter
     if (existingMonthly) {
       const { error: updateMonthlyError } = await supabase
         .from('usage_counters')
         .update({ count: existingMonthly.count + 1 })
         .eq('id', existingMonthly.id);
-      
+
       if (updateMonthlyError) {
         console.log('Error updating monthly counter, using localStorage instead:', updateMonthlyError);
       }
@@ -387,12 +387,12 @@ export async function incrementUsageCounter(user: User | null): Promise<boolean>
           period: currentMonth,
           count: 1
         });
-      
+
       if (insertMonthlyError) {
         console.log('Error creating monthly counter, using localStorage instead:', insertMonthlyError);
       }
     }
-    
+
     return true;
   } catch (error) {
     console.log('Unexpected error in incrementUsageCounter, using localStorage instead:', error);
